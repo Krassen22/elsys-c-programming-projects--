@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "card.h"
-#include "deck.h"
-#include "manapool.h"
+#include "..\card\card.h"
+#include "..\deck\deck.h"
+#include "..\manapool\manapool.h"
 
 int main()
 {

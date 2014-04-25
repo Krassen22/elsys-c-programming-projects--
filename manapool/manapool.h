@@ -1,6 +1,6 @@
 #ifndef __MANAPOOL__
 #define __MANAPOOL__
-#include "deck.h"
+#include "..\deck\deck.h"
 #define MANASZ 10
 
 struct manapool_t
