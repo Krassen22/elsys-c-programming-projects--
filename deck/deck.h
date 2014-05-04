@@ -1,13 +1,9 @@
 #ifndef __CARD__
 #define __CARD__
 #define DECKSZ 9
+#include "..\card\card.h"
 // push_card, draw_card, look_card
 
-struct card_t
-{
-    char* name;
-    int power, live, mana_cost;
-};
 
 struct deck_t
 {
