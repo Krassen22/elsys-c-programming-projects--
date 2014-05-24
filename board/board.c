@@ -29,7 +29,7 @@ void print_player(struct player_t *player, int turn)
 int can_play_card(struct board_t *board, struct player_t *pl, char *card_name, int player, int num_lane)
 {
 	int i;
-		for(i=0;i <= HANDSZ;i++)
+		for(i=0;i <= pl->last_t_card_in_hand;i++)
 		{
 			if (pl->cards_in_hand[i].name == card_name && &board->board_game[player][num_lane] == 0 && pl->mana_player.current_mana >= pl->cards_in_hand[i].mana_cost)
 			{
