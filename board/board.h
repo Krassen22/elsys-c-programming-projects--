@@ -18,6 +18,7 @@ void init_board(struct board_t *board);
 int can_play_card(struct board_t *board, char *card_name, int player, int num_lane);
 int play_card(struct board_t *board, int player, char *card_name, int num_lane);
 void turn_end(struct board_t *board, int player);
+int winner(struct board_t *board);
 void print_board(struct board_t board, int turn);
 
 #endif

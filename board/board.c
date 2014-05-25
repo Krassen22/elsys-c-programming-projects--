@@ -105,6 +105,23 @@ void turn_end(struct board_t *board, int player)
 }
 
 
+int winner(struct board_t *board)
+{
+		if(board->players[0].hp_player == 0)
+		{
+			return 1; // second_player wins
+		} 
+		else if (board->players[1].hp_player == 0)
+		{
+			return 2; // first_player wins
+		}
+		else 
+		{
+			return 0; // we haven NOT winner yet
+		}
+}
+
+
 void print_board(struct board_t board, int turn)//it can be 1,3,5,7... 
 {
 	printf("PLAYER_NAME: %s, HP: %d, MANA: %d/10, TURN: %d\n", board.players[0].name_player, 
