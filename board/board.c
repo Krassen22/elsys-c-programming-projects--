@@ -18,20 +18,15 @@ void init_board(struct board_t *board)
 	}	
 }
 
-void print_player(struct player_t *player, int turn)
-{
-	
-		printf("PLAYER_NAME: %s, HP: %d, MANA: %d/10, TURN: %d\n", player->name_player, player->hp_player, player->mana_player.current_mana, turn);
-	
-}
 
-
-int can_play_card(struct board_t *board, struct player_t *pl, char *card_name, int player, int num_lane)
+int can_play_card(struct board_t *board, char *card_name, int player, int num_lane) //players 0 or 1
 {
 	int i;
-		for(i=0;i <= pl->last_t_card_in_hand;i++)
+	if(player == 0)
+	{
+		for(i=0;i <= board->players[player].last_t_card_in_hand;i++)
 		{
-			if (pl->cards_in_hand[i].name == card_name && &board->board_game[player][num_lane] == 0 && pl->mana_player.current_mana >= pl->cards_in_hand[i].mana_cost)
+			if (board->players[player].cards_in_hand[i].name == card_name && &board->board_game[player][num_lane] == 0 && board->players[player].mana_player.current_mana >= board->players[player].cards_in_hand[i].mana_cost)
 			{
 				return 1; // we can play card 
 			}
@@ -40,45 +35,87 @@ int can_play_card(struct board_t *board, struct player_t *pl, char *card_name, i
 				return 0; // we can NOT play card
 			}
 		}
+	}
+	else if(player == 1)
+	{
+		for(i=0;i <= board->players[player].last_t_card_in_hand;i++)
+		{
+			if (board->players[player].cards_in_hand[i].name == card_name && &board->board_game[player][num_lane] == 0 && board->players[player].mana_player.current_mana >= board->players[player].cards_in_hand[i].mana_cost)
+			{
+				return 1; // we can play card 
+			}
+			else
+			{
+				return 0; // we can NOT play card
+			}
+		}
+	}	
 }
 
-int play_card(struct board_t *board, struct player_t *pl, int player, char *card_name, int num_lane)
+int play_card(struct board_t *board, int player, char *card_name, int num_lane)//players 0 or 1
 {
 	int i;
-	for(i=0;i <= pl->last_t_card_in_hand ;i++)
+	if(player == 0)
 	{
-		if (pl->cards_in_hand[i].name == card_name && &board->board_game[player][num_lane] == 0 && pl->mana_player.current_mana >= pl->cards_in_hand[i].mana_cost )
+		for(i=0;i <= board->players[player].last_t_card_in_hand;i++)
 		{
-			board->board_game[player][num_lane].name = pl->cards_in_hand[i].name;	
-			board->board_game[player][num_lane].live = pl->cards_in_hand[i].live;	
-			board->board_game[player][num_lane].power = pl->cards_in_hand[i].power;	
-			board->board_game[player][num_lane].mana_cost = pl->cards_in_hand[i].mana_cost;	
+			if (board->players[player].cards_in_hand[i].name == card_name && &board->board_game[player][num_lane] == 0 && board->players[player].mana_player.current_mana >= board->players[player].cards_in_hand[i].mana_cost )
+			{
+				board->board_game[player][num_lane].name = board->players[player].cards_in_hand[i].name;	
+				board->board_game[player][num_lane].live = board->players[player].cards_in_hand[i].live;	
+				board->board_game[player][num_lane].power = board->players[player].cards_in_hand[i].power;	
+				board->board_game[player][num_lane].mana_cost = board->players[player].cards_in_hand[i].mana_cost;	
 			
-			return 1; // we can play card 	
+				return 1; // we can play card 	
+			}
+			else
+			{
+				return 0; // we can NOT play card	
+			}
 		}
-		else
+	}
+	else if (player == 1)
+	{
+		for(i=0;i <= board->players[player].last_t_card_in_hand;i++)
 		{
-			return 0; // we can NOT play card	
+			if (board->players[player].cards_in_hand[i].name == card_name && &board->board_game[player][num_lane] == 0 && board->players[player].mana_player.current_mana >= board->players[player].cards_in_hand[i].mana_cost )
+			{
+				board->board_game[player][num_lane].name = board->players[player].cards_in_hand[i].name;	
+				board->board_game[player][num_lane].live = board->players[player].cards_in_hand[i].live;	
+				board->board_game[player][num_lane].power = board->players[player].cards_in_hand[i].power;	
+				board->board_game[player][num_lane].mana_cost = board->players[player].cards_in_hand[i].mana_cost;	
+			
+				return 1; // we can play card 	
+			}
+			else
+			{
+				return 0; // we can NOT play card	
+			}
 		}
 	}
 	
 }
 
 
-//void turn_end(struct board_t *board, int first_pl);
-
-
-void print_board(struct board_t *board, struct player_t first_player, struct player_t second_player, int turn)//it can be 1,3,5,7... 
+void turn_end(struct board_t *board, int player)
 {
-	printf("PLAYER_NAME: %s, HP: %d, MANA: %d/10, TURN: %d\n", first_player.name_player, 
-	first_player.hp_player, first_player.mana_player.current_mana, turn);
+	board->players[player].mana_player.size_mana+=1;
+	board->players[player].mana_player.current_mana = board->players[player].mana_player.size_mana;
+	
+}
+
+
+void print_board(struct board_t board, int turn)//it can be 1,3,5,7... 
+{
+	printf("PLAYER_NAME: %s, HP: %d, MANA: %d/10, TURN: %d\n", board.players[0].name_player, 
+	board.players[0].hp_player, board.players[0].mana_player.current_mana, turn);
  
 	printf("________________________________________________________________________\n");
 	int i;
-	for (i=0;i <= first_player.last_t_card_in_hand;i++)
+	for (i=0;i <= board.players[0].last_t_card_in_hand;i++)
 	{
-		printf("|   %d|%d(%d)  ", first_player.cards_in_hand[i].power, 
-		first_player.cards_in_hand[i].live, first_player.cards_in_hand[i].mana_cost);
+		printf("|   %d|%d(%d)  ", board.players[0].cards_in_hand[i].power, 
+		board.players[0].cards_in_hand[i].live, board.players[0].cards_in_hand[i].mana_cost);
 	}	
 	printf("|\n");
 	
@@ -89,24 +126,25 @@ void print_board(struct board_t *board, struct player_t first_player, struct pla
 		int num_lane;
 		for (num_lane=0;num_lane <= LANES;num_lane++)
 		{
-			printf("#   %d|%d  ", board->board_game[player][num_lane].power, board->board_game[player][num_lane].live);	
+			printf("#   %d|%d  ", board.board_game[player][num_lane].power, board.board_game[player][num_lane].live);	
 		}	
 		printf("#\n");
 	}	       
 	printf("#########################################################################\n");
     
-    for(i=0;i <= second_player.last_t_card_in_hand;i++)
+    for(i=0;i <= board.players[1].last_t_card_in_hand;i++)
     {
-		printf("|   %d|%d(%d)  ", second_player.cards_in_hand[i].power, 
-		second_player.cards_in_hand[i].live, first_player.cards_in_hand[i].mana_cost);   
+		printf("|   %d|%d(%d)  ", board.players[1].cards_in_hand[i].power, 
+		board.players[1].cards_in_hand[i].live, board.players[1].cards_in_hand[i].mana_cost);   
     }      
     printf("|\n");       
              
     printf("________________________________________________________________________\n");
    
-    printf("PLAYER_NAME: %s, HP: %d, MANA: %d/10, TURN: %d\n", second_player.name_player, 
-    second_player.hp_player, second_player.mana_player.current_mana, turn+1);
+    printf("PLAYER_NAME: %s, HP: %d, MANA: %d/10, TURN: %d\n", board.players[1].name_player, 
+    board.players[1].hp_player, board.players[1].mana_player.current_mana, turn+1);
 }
+
 
 /*int main(int argc, char **argv)
 {
