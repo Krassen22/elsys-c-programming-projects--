@@ -1,15 +1,30 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "player.h"
 
+
+void Null_player_hand(struct player_t *player)
+{
+	int i;
+	for(i=0; i<= HANDSZ;i++)
+	{
+		player->cards_in_hand[i].name = "";
+		player->cards_in_hand[i].live = 0;
+		player->cards_in_hand[i].power = 0;
+		player->cards_in_hand[i].mana_cost = 0;
+	}	
+}
 
 void init_player(struct player_t *player)
 {
         player->hp_player = 30;
         init_mana(&player->mana_player);
-
+        player->deck_player = (struct deck_t*)malloc(DECKSZ * sizeof(struct deck_t)); 
+        player->cards_in_hand = (struct card_t*)malloc(HANDSZ * sizeof(struct card_t)); 
         for(player->last_t_card_in_hand = 0; player->last_t_card_in_hand <= 4; player->last_t_card_in_hand++)
 		{
-			player->cards_in_hand[player->last_t_card_in_hand] = draw_card(&player->deck_player);
+			player->cards_in_hand[player->last_t_card_in_hand] = draw_card(player->deck_player);
+			printf("ehohoho");
 		}
 }
 
@@ -49,10 +64,10 @@ void turn_begin(struct player_t *player)
 {
 	if (player->last_t_card_in_hand <= HANDSZ)
 	{
-
-			if (player->deck_player.top != 0)
+	
+			if (player->deck_player->top != 0)
 			{
-					player->cards_in_hand[player->last_t_card_in_hand] = draw_card(&player->deck_player);
+					player->cards_in_hand[player->last_t_card_in_hand] = draw_card(player->deck_player);
 					player->last_t_card_in_hand++;
 			}
 			else
@@ -61,7 +76,7 @@ void turn_begin(struct player_t *player)
 			}
 
 	}
-	else
+	else 
 	{
 			printf("Hand is full!");
 	}
@@ -80,7 +95,7 @@ void play_card_from_hand(struct player_t *player, char *card_name)
 			player->cards_in_hand[e].power = 0;
 			player->cards_in_hand[e].mana_cost = 0;
 		}
-
+		
 	}
 }
 
