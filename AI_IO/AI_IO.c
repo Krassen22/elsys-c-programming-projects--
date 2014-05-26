@@ -7,10 +7,10 @@
 
 void make_deck()
 {
-    FILE *fp;
+	FILE *fp;
 	fp = fopen("cards.csv", "w");
 	
-    char names[255][30] = {"Dido", "Lubo", "Nike", "Nartziz", "Nina_Dobrev", "Samorai_Jack", "Zed", "Faker", "Tisho", "Gavrata", "Batman", "Joker",
+	char names[255][30] = {"Dido", "Lubo", "Nike", "Nartziz", "Nina_Dobrev", "Samorai_Jack", "Zed", "Faker", "Tisho", "Gavrata", "Batman", "Joker",
 		 "Kravara", "Kirta", "Sapuna", "Smyrtniq", "Mishoka", "Sverlosiniq", "Blizalkata", "Swetkawitzata", "Off", "Blediq", "Rijiq", "Ice-cream", 
 		 "Alo_Alo", "Cvetno_ponny", "Pleshivoto", "Kukata", "Krivaka", "Zelkata"};
 		 
