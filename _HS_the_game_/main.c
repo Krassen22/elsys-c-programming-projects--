@@ -26,7 +26,7 @@ int main()
 	struct card_t fourteen = { "card_fourteen", 2, 2, 1 };
 	
 	struct card_t one_special = { "special_card_one", -1, 0, 1};// +5 life
-	struct card_t two_special = { "special_card_two", -2, 0, 1};// -5 opponent life
+	struct card_t two_special = { "special_card_two", -2, 0, 1};// *2 card_power and +5 card_life 
 	struct card_t three_special = { "special_card_three", -3, 0, 5};// +1 mana
 	//printf("%d\n", attack(&one, &two));
 	
