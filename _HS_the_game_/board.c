@@ -40,48 +40,48 @@ int can_play_card(struct board_t *board, struct player_t *pl, int player, struct
 
 int play_card(struct board_t *board, struct player_t *pl, int player, struct card_t card, int num_lane)//players 0 or 1
 {
-	int i;
-	for(i=0;i <= pl->last_t_card_in_hand;i++)
-	{
-		if (pl->cards_in_hand[i].name == card.name && &board->board_game[player][num_lane] == 0 && 
-		pl->mana_player.current_mana >= pl->cards_in_hand[i].mana_cost)
+	if(pl->mana_player.current_mana >= card.mana_cost)
+	{	
+		if(card.power >= 0)// monster
 		{
-			if(pl->cards_in_hand[i].power >= 0)// monster
-			{
-				board->board_game[player][num_lane].name = pl->cards_in_hand[i].name;	
-				board->board_game[player][num_lane].power = pl->cards_in_hand[i].power;	
-				board->board_game[player][num_lane].life = pl->cards_in_hand[i].life;	
-				board->board_game[player][num_lane].mana_cost = pl->cards_in_hand[i].mana_cost;	
-				printf("ehohohohoh\n");
-			}
-			else if(pl->cards_in_hand[i].power == -1)// special card_one
-			{
-				pl->hp_player += 5;
-			}
-			else if(pl->cards_in_hand[i].power == -2)// special card_two
-			{
-				pl->hp_player -= 5;			
-			}
-			else if(pl->cards_in_hand[i].power == -3)
-			{
-				pl->mana_player.current_mana += 1;// special card_three	 	
-			}
-			pl->mana_player.current_mana -= pl->cards_in_hand[i].mana_cost;
-			pl->cards_in_hand[i].name = "";
-			pl->cards_in_hand[i].life = 0;
-			pl->cards_in_hand[i].power = 0;
-			pl->cards_in_hand[i].mana_cost = 0;
+			board->board_game[player][num_lane].name = card.name;	
+			board->board_game[player][num_lane].power = card.power;	
+			board->board_game[player][num_lane].life = card.life;	
+			board->board_game[player][num_lane].mana_cost = card.mana_cost;	
 			
-			return 1; // we can play card
 		}
-		else
+		else if(card.power == -1)// special card_one
 		{
-			return 0; // we can NOT play card	
+			pl->hp_player += 2;
 		}
+		else if(card.power == -2)// special card_two
+		{
+			board->board_game[player][num_lane].power *=2; 
+			board->board_game[player][num_lane].life +=5;
+		}
+		else if(card.power == -3)
+		{
+			pl->mana_player.current_mana += 1;// special card_three	 	
+		}
+		pl->mana_player.current_mana -= card.mana_cost;
+		int i;
+		for(i=0; i<=pl->last_t_card_in_hand; i++)
+		{
+			if (pl->cards_in_hand[i].name == card.name)
+			{
+				pl->cards_in_hand[i].name = "";
+				pl->cards_in_hand[i].life = 0;
+				pl->cards_in_hand[i].power = 0;
+				pl->cards_in_hand[i].mana_cost = 0;
+			}
+		}
+	}		
+	else
+	{
+		printf("\nPLAYER:%s Not enough mana for:%s\n",pl->name_player, card.name);
 	}	
+		
 }
-
-	
 	
 
 void turn_end(struct board_t *board, struct player_t *pl, int player)
@@ -111,7 +111,8 @@ int winner(struct board_t *board, struct player_t *pl_one, struct player_t *pl_t
 
 void print_board(struct board_t board, struct player_t pl_one, struct player_t pl_two, int turn)//it can be 1,3,5,7... 
 {
-	printf("PLAYER_NAME: %s, HP: %d, MANA: %d/10, TURN: %d\n", pl_one.name_player, 
+	
+	printf("\nPLAYER_NAME: %s, HP: %d, MANA: %d/10, TURN: %d\n", pl_one.name_player, 
 	pl_one.hp_player, pl_one.mana_player.current_mana, turn);
  
 	printf("________________________________________________________________________\n");

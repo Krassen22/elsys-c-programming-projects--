@@ -7,7 +7,7 @@
 
 struct player_t
 {
-    char name_player[255];
+    char *name_player;
     struct deck_t *deck_player;
     struct card_t *cards_in_hand;
     int last_t_card_in_hand;

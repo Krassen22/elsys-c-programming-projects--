@@ -27,12 +27,12 @@ void down_hp(struct player_t *player, int hp)
 	if (hp < player->hp_player)
 	{
 		player->hp_player -=hp;
-		printf("\nHP_PLAYER:(after down hp) %d\n", player->hp_player);
+		//printf("\nHP_PLAYER:(after down hp) %d\n", player->hp_player);
 	}
 	else
 	{
 		player->hp_player = 0;
-		printf("\nPLAYER is dead!: %d\n", player->hp_player);
+		//printf("\nPLAYER is dead!: %d\n", player->hp_player);
 
 	}
 
@@ -43,12 +43,12 @@ void up_hp(struct player_t *player, int hp)
 	if((hp + player->hp_player) <= 30)
 	{
 		player->hp_player += hp;
-        	printf("\nHP_PLAYER:(after up   hp) %d\n", player->hp_player );
+        	//printf("\nHP_PLAYER:(after up   hp) %d\n", player->hp_player );
 	}
 	else
 	{
 		player->hp_player = 30;
-		printf("\nHP_PLAYER:(after up   hp) %d\n", player->hp_player);
+		//printf("\nHP_PLAYER:(after up   hp) %d\n", player->hp_player);
 	}
 
 }

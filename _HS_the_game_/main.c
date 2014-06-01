@@ -8,10 +8,6 @@
 
 int main()
 {
-	
-	
-	
-	
 
 	struct card_t card_to_push;
 	struct card_t one = { "card_one", 1, 7, 3 };
@@ -22,26 +18,26 @@ int main()
 	struct card_t six = { "card_six", 5, 4, 1 };
 	struct card_t seven = { "card_seven", 6, 2, 4 };
 	struct card_t eight = { "card_eight", 1, 7, 3 };
-	struct card_t nine = { "card_nine", 3, 7, 10 };
-	struct card_t ten = { "card_ten", 3, 2, 5 };
+	struct card_t nine = { "card_nine", 3, 7, 1 };
+	struct card_t ten = { "card_ten", 3, 2, 2 };
 	struct card_t eleven = { "card_eleven", 1, 2, 2 };
 	struct card_t twelve = { "card_twelve", 3, 2, 4 };
-	struct card_t thirteen = { "card_thirteen", 5, 4, 1 };
-	struct card_t fourteen = { "card_fourteen", 6, 2, 4 };
+	struct card_t thirteen = { "card_thirteen", 5, 4, 2 };
+	struct card_t fourteen = { "card_fourteen", 2, 2, 1 };
 	
-	struct card_t one_special = { "special_card_one", -1, 0, 3};// +5 life
-	struct card_t two_special = { "special_card_two", -2, 0, 4};// -5 opponent life
+	struct card_t one_special = { "special_card_one", -1, 0, 1};// +5 life
+	struct card_t two_special = { "special_card_two", -2, 0, 1};// -5 opponent life
 	struct card_t three_special = { "special_card_three", -3, 0, 5};// +1 mana
 	//printf("%d\n", attack(&one, &two));
 	
 	//---------------------------------------------------------------
-	// player
 	struct deck_t player_deck;
 	struct player_t player;
 	
 	struct player_t first_player;
 	struct player_t second_player;
-	
+	first_player.name_player = "TGS";
+	second_player.name_player = "Baba Gusi";
 	init_deck(&player_deck);
 	
 	push_card(one, &player_deck);
@@ -67,9 +63,11 @@ int main()
 	print_stack(player_deck);
 
 	Null_player_hand(&player);
+	
 	init_player(&player_deck, &first_player);
+	
 	init_player(&player_deck, &second_player);
-	down_hp(&first_player,4);
+	down_hp(&first_player,5);
 	up_hp(&first_player,2);
 	
 	
@@ -88,30 +86,46 @@ int main()
 
 	init_board(&board);
 	
+	turn_end(&board, &first_player, 0);
+	turn_end(&board, &second_player, 1);
+	turn_end(&board, &first_player, 0);
+	turn_end(&board, &second_player, 1);
+	turn_end(&board, &first_player, 0);
+	turn_end(&board, &second_player, 1);
+	turn_end(&board, &first_player, 0);
+	turn_end(&board, &second_player, 1);
 	
 	can_play_card(&board, &first_player, 0, thirteen, 3);// players 0 or 1
 	
 	play_card(&board, &first_player, 0, thirteen, 3);// players 0 or 1
 	
-	//turn_end(&board, 0);//players 0 or 1
-	
 	can_play_card(&board, &second_player, 1, nine, 3);// players 0 or 1
 	
 	play_card(&board, &second_player, 1, nine, 3);// players 0 or 1
 	
+	print_board(board, first_player, second_player, 1);
+	printf("\n--------------------------------------------------------\n");
 	
+	turn_begin(&player_deck, &first_player);
+	
+	turn_begin(&player_deck, &second_player);
+	
+	play_card(&board, &first_player, 0, two_special, 3);// players 0 or 1
+	
+	play_card(&board, &second_player, 1, ten, 2);// players 0 or 1
+
+	print_board(board, first_player, second_player, 3);
 	
 	printf("\n--------------------------------------------------------");
-	print_cards_in_hand(&first_player);
-	printf("\n--------------------------------------------------------");
-	print_cards_in_hand(&second_player);
+	//print_cards_in_hand(&first_player);
+	printf("\n--------------------------------------------------------\n");
+	//print_cards_in_hand(&second_player);
 	
-	print_cards_in_hand(&second_player);
+	
 	
 	//printf("%d\n", winner(&board, &first_player, &second_player));
-	print_board(board, first_player, second_player, 1);
-	turn_end(&board, &first_player, 0);
-	turn_end(&board, &second_player, 1);
+	//print_board(board, first_player, second_player, 1);
+	
 	/*
 	//---------------------------------------------------------------
 	// manapool
@@ -137,8 +151,6 @@ int main()
 	push_mana(&pool);//=> 10 mana
 	//---------------------------------------------------------------
 	// board
-	
-	
 	//---------------------------------------------------------------
 	
 	
