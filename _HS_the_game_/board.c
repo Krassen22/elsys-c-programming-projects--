@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "board.h"
-
+//board + special cards
 void init_board(struct board_t *board)
 {
 	
@@ -21,11 +21,12 @@ void init_board(struct board_t *board)
 
 int can_play_card(struct board_t *board, struct player_t *pl, int player, struct card_t card, int num_lane) //players 0 or 1
 {
-	int i;
 	
+	int i;
 	for(i=0;i <= pl->last_t_card_in_hand;i++)
-	{
-		if (pl->cards_in_hand[i].name == card.name && &board->board_game[player][num_lane] == 0 && 
+	{	
+		
+		if (pl->cards_in_hand[i].name == card.name && &board->board_game[player][num_lane].power == 0 && 
 		pl->mana_player.current_mana >= pl->cards_in_hand[i].mana_cost)
 		{
 			return 1; // we can play card 
