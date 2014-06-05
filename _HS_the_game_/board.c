@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "board.h"
-//board + special cards
+
 void init_board(struct board_t *board)
 {
 	
@@ -20,22 +20,18 @@ void init_board(struct board_t *board)
 
 
 int can_play_card(struct board_t *board, struct player_t *pl, int player, struct card_t card, int num_lane) //players 0 or 1
-{
-	
-	int i;
-	for(i=0;i <= pl->last_t_card_in_hand;i++)
-	{	
+{	
 		
-		if (pl->cards_in_hand[i].name == card.name && &board->board_game[player][num_lane].power == 0 && 
-		pl->mana_player.current_mana >= pl->cards_in_hand[i].mana_cost)
-		{
-			return 1; // we can play card 
-		}
-		else
-		{
-			return 0; // we can NOT play card
-		}
+	if (board->board_game[player][num_lane].power == 0 && pl->mana_player.current_mana >= card.mana_cost)
+	{
+		printf("\nYou can play this card: %s\n", card.name);	
 	}
+	else
+	{
+		printf("\nYou can NOT play this card: %s\n", card.name);	
+	}
+		
+	
 }
 	
 
@@ -53,7 +49,8 @@ int play_card(struct board_t *board, struct player_t *pl, int player, struct car
 		}
 		else if(card.power == -1)// special card_one
 		{
-			pl->hp_player += 2;
+			//pl->hp_player += 2; 
+			up_hp(pl, 2);
 		}
 		else if(card.power == -2)// special card_two
 		{
@@ -83,7 +80,36 @@ int play_card(struct board_t *board, struct player_t *pl, int player, struct car
 	}	
 		
 }
-	
+
+int attack_cards(struct board_t *board, struct player_t *attacker, struct player_t *defender, int attk, int def, int num_lane)
+{
+	if(board->board_game[def][num_lane].life != 0)
+	{
+		board->board_game[def][num_lane].life -= board->board_game[attk][num_lane].power;
+		board->board_game[attk][num_lane].life -= board->board_game[def][num_lane].power;
+		
+		if (board->board_game[def][num_lane].life <= 0)
+		{
+			board->board_game[def][num_lane].name = "";	
+			board->board_game[def][num_lane].power = 0;	
+			board->board_game[def][num_lane].life = 0;	
+			board->board_game[def][num_lane].mana_cost = 0;	
+		}
+		if (board->board_game[attk][num_lane].life <= 0)
+		{
+			board->board_game[attk][num_lane].name = "";	
+			board->board_game[attk][num_lane].power = 0;	
+			board->board_game[attk][num_lane].life = 0;	
+			board->board_game[attk][num_lane].mana_cost = 0;	
+		}
+			
+	}
+	else
+		{
+			down_hp(defender, board->board_game[attk][num_lane].power);
+		}	
+}
+
 
 void turn_end(struct board_t *board, struct player_t *pl, int player)
 {
@@ -92,20 +118,20 @@ void turn_end(struct board_t *board, struct player_t *pl, int player)
 	
 }
 
-int winner(struct board_t *board, struct player_t *pl_one, struct player_t *pl_two)
+int winner(struct player_t pl_one, struct player_t pl_two)
 {
 		
-		if(pl_one->hp_player == 0)
+		if(pl_one.hp_player <= 0)
 		{
-			return 1; // second_player wins
-		} 
-		else if (pl_two->hp_player == 0)
+			printf("\nSecond_player wins!\n");
+		}
+		else if (pl_two.hp_player <= 0)
 		{
-			return 2; // first_player wins
+			printf("\nFirst_player wins!\n");
 		}
 		else 
 		{
-			return 0; // we haven NOT winner yet
+			printf("\nWe haven NOT winner yet!\n");
 		}
 }
 
